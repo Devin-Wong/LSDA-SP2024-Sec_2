@@ -1,0 +1,17 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+x = c("Jin", "Mark", "Jack")
+y = c(90, 80, 70)
+
+l = list(
+  "name" = x,
+  "grade" = y
+)  
+
+l['name']
+l['grade']  
+```
+
