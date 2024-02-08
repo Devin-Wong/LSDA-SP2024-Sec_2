@@ -153,11 +153,62 @@ summary(model.interaction)
 ```
 # non-linear relationship
 ```{r}
+plot(Auto$horsepower, Auto$mpg)
+```
 
+```{r}
+model.nonlinear = lm(mpg~horsepower+I(horsepower^2),data = Auto )
+
+summary(model.nonlinear)
+```
+# other considerations
+## 1. nonlinearity
+
+```{r}
+model = lm(mpg~.-name, data=Auto)
+summary(model)
+```
+### Residual analysis
+```{r}
+hist(model$residuals)
+mean(model$residuals)
+
+```
+## 3. non-constant variance
+```{r}
+plot(model$fitted.values, model$residuals)
+```
+
+```{r}
+model.trans = lm(log(mpg)~.-name, data=Auto)
+
+plot(model.trans$fitted.values, model.trans$residuals)
 ```
 
 
 
+## 6 Collinearity
+```{r}
+pairs(Auto[,1:8])
+```
+
+```{r}
+# displacement
+m.disp = lm(displacement~.-name-mpg, data = Auto)
+
+smry = summary(m.disp)
+
+# smry$r.squared
+
+vif.disp = 1/(1-smry$r.squared)
+
+vif.disp
+```
+
+```{r}
+model = lm(mpg~.-name-displacement, data = Auto)
+summary(model)
+```
 
 
 
