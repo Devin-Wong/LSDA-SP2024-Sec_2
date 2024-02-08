@@ -111,8 +111,50 @@ predict(model4, newdata = new_data,interval = "confidence", level=0.95)
 predict(model4, newdata = new_data,interval = "predict", level=0.95)
 ```
 
+# Qualitative Predictors
+```{r}
+library(ISLR2)
 
+model.own = lm(Balance~Own, data=Credit)
+summary(model.own)
+```
+```{r}
+model.student = lm(Balance~Student, data=Credit)
+summary(model.student)
+```
+```{r}
+model.region = lm(Balance~Region, data = Credit)
+summary(model.region)
+```
+## relevel
+```{r}
+Region.1 = relevel(as.factor(Credit$Region), ref = 'West')
 
+# model.region.1 = lm(Balance~Region.1, data=Credit)
+
+model.region.1 = lm(Credit$Balance~Region.1)
+
+summary(model.region.1)
+```
+# Interaction
+
+```{r}
+Advertising = read.csv('Advertising.csv')
+
+pairs(Advertising)
+```
+
+```{r}
+# model.interaction = lm(Sales~TV+Radio+TV:Radio, data = Advertising)
+
+model.interaction = lm(Sales~TV*Radio, data = Advertising)
+
+summary(model.interaction)
+```
+# non-linear relationship
+```{r}
+
+```
 
 
 
