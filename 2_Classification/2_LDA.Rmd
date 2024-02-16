@@ -1,0 +1,23 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(MASS)
+
+lda.balance = lda(default~balance, data = Default)
+lda.balance
+```
+
+```{r}
+pre = predict(lda.balance, newdata = Default)
+
+names(pre)
+```
+```{r}
+pre$class
+
+pre$posterior
+
+```
+

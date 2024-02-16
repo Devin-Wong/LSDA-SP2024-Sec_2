@@ -1,0 +1,68 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(ISLR2)
+
+View(Default)
+
+```
+
+# model balance
+```{r}
+model.balance = glm(default~balance, data=Default, family = binomial)
+
+summary(model.balance)
+```
+# model student
+```{r}
+model.student = glm(default~student, data=Default, family = binomial)
+
+summary(model.student)
+```
+# prediction using balance
+```{r}
+new_data = data.frame(balance = 1000)
+
+l = predict(model.balance, newdata = new_data)
+p = exp(l)/(1+exp(l))
+p
+
+predict(model.balance, newdata = new_data, type = "response" )
+```
+# multiple logistic regression
+```{r}
+model.all = glm(default~., data = Default, family = binomial)
+summary(model.all)
+```
+```{r}
+boxplot(Default$balance~Default$student)
+```
+# prediction
+```{r}
+new_data = data.frame(student='Yes', balance=1500, income=40000)
+
+predict(model.all, newdata = new_data, type = 'response')
+
+
+```
+
+```{r}
+new_data = data.frame(balance=1500, income=40000, student='No')
+
+predict(model.all, newdata = new_data, type = 'response')
+
+```
+
+```{r}
+d = 1 * (Default$default == "Yes")
+
+plot(Default$balance, d)
+```
+
+
+
+
+
+
