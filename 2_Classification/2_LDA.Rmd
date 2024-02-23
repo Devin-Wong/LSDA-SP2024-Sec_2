@@ -2,22 +2,133 @@
 title: "R Notebook"
 output: html_notebook
 ---
+
+# lda using balance
 ```{r}
 library(MASS)
 
 lda.balance = lda(default~balance, data = Default)
 lda.balance
 ```
-
+## prediction
 ```{r}
 pre = predict(lda.balance, newdata = Default)
 
 names(pre)
 ```
-```{r}
-pre$class
 
-pre$posterior
+```{r}
+pre$class[1:5]
+
+pre$posterior[1:5,]
 
 ```
+# lda using all variables
+```{r}
+library(MASS)
+lda.all = lda(default~., data = Default)
+
+lda.pred = predict(lda.all, newdata = Default)
+
+names(lda.pred)
+```
+```{r}
+lda.pred$class[1:5]
+
+lda.pred$posterior[1:5,]
+```
+
+
+```{r}
+N = nrow(Default)
+
+1 - sum(lda.pred$class == Default$default)/N
+
+```
+```{r}
+table(Default$default)
+```
+```{r}
+table(lda.pred$class, Default$default)
+```
+# improve sensitivity
+```{r}
+N = nrow(Default)
+
+pred.prob.yes = lda.pred$posterior[,'Yes']
+
+threshold = 0.2
+
+pred.class = rep('No', N)
+pred.class[pred.prob.yes>threshold] = 'Yes'
+
+# sum(lda.pred$class == pred.class)
+table(pred.class, Default$default)
+```
+# ROC curve
+```{r}
+N = nrow(Default)
+
+pred.prob.yes = lda.pred$posterior[,'Yes']
+
+threshold = 0.3
+
+pred.class = rep('No', N)
+pred.class[pred.prob.yes>threshold] = 'Yes'
+
+tab = table(pred.class, Default$default)
+
+tn = tab['No', 'No']
+fn = tab['No', 'Yes']
+fp = tab['Yes', 'No']
+tp = tab['Yes', 'Yes']
+
+tp.rate = tp/(tp+fn)
+fp.rate = fp/(fp+tn)
+
+
+print(tp.rate)
+print(fp.rate)
+```
+```{r}
+N = nrow(Default)
+
+pred.prob.yes = lda.pred$posterior[,'Yes']
+
+# threshold = 0.3
+tp.rates = c()
+fp.rates = c()
+for(threshold in seq(0.1, 0.94, 0.01)){
+  pred.class = rep('No', N)
+  pred.class[pred.prob.yes>threshold] = 'Yes'
+  
+  tab = table(pred.class, Default$default)
+  
+  tn = tab['No', 'No']
+  fn = tab['No', 'Yes']
+  fp = tab['Yes', 'No']
+  tp = tab['Yes', 'Yes']
+  
+  tp.rate = tp/(tp+fn)
+  fp.rate = fp/(fp+tn)
+  
+  tp.rates = c(tp.rates, tp.rate)
+  fp.rates = c(fp.rates, fp.rate)
+}
+```
+
+```{r}
+plot(fp.rates, tp.rates)
+```
+
+
+
+
+
+
+
+
+
+
+
 
