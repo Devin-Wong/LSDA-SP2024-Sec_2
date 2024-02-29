@@ -1,0 +1,41 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# QDA
+```{r}
+library(ISLR2)
+library(MASS)
+
+qda.fit = qda(default~., data=Default )
+
+pred = predict(qda.fit, newdata = Default)
+
+table(pred$class, Default$default)
+
+```
+
+
+# Naive Bayes
+```{r}
+library(e1071)
+nb.fit = naiveBayes(default~., data=Default)
+
+nb.pred = predict(nb.fit, newdata = Default)
+
+table(nb.pred, Default$default)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+

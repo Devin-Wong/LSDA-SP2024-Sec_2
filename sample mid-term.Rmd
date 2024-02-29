@@ -1,0 +1,55 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+# Q12
+```{r}
+library(ISLR2)
+cor(Auto[,-9])
+
+```
+```{r}
+lm.fit = lm(mpg~.-name, data = Auto)
+summary(lm.fit)
+```
+```{r}
+lm.fit = lm(mpg~.-name + displacement*cylinders, data = Auto)
+summary(lm.fit)
+```
+
+
+```{r}
+lm.horsepower = lm(mpg~horsepower, data = Auto)
+summary(lm.horsepower)
+```
+```{r}
+new_data = data.frame(horsepower = 110)
+predict(lm.horsepower, newdata = new_data, interval = 'confidence')
+```
+```{r}
+predict(lm.horsepower, newdata = new_data, interval = 'predict')
+```
+
+# Q14
+```{r}
+set.seed(1) 
+N = nrow(Default) 
+train.index = sample(N, 0.8*N)
+data.train = Default[train.index,]
+data.test = Default[-train.index,] 
+
+lr.train = glm(default~., data = data.train, family = binomial)
+summary(lr.train)
+```
+
+
+
+
+
+
+
+
+
+
+
+
