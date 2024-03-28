@@ -1,0 +1,29 @@
+
+```{r}
+library(ISLR2)
+library(boot)
+set.seed(1)
+
+glm.model = glm(mpg~horsepower, data=Auto)
+cv.glm.rst = cv.glm(Auto, glm.model, K=10)
+
+
+cv.glm.rst$delta[1]
+
+```
+```{r}
+cv.mses = c()
+for (i in 1:10) {
+    
+  glm.model = glm(mpg~poly(horsepower, i), data=Auto)
+  cv.glm.rst = cv.glm(Auto, glm.model, K=10)
+
+  mse = cv.glm.rst$delta[1]
+  cv.mses = c(cv.mses, mse)
+}
+
+cv.mses
+plot(cv.mses, pch=20, col="red", type = 'b')
+  
+```
+

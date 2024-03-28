@@ -1,0 +1,92 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+# manual way
+```{r}
+library(ISLR2)
+
+N = nrow(Auto)
+
+cv_mses = c()
+for(degree in 1:10){
+  val_mses = c()
+  for (val.index in 1:N ) {
+  
+    dat.val = Auto[val.index, ]
+    dat.train = Auto[-val.index, ]
+    
+    model = lm(mpg ~ poly(horsepower, degree), data=dat.train)
+    val.pred = predict(model, newdata = dat.val)
+    val.mse = mean((dat.val$mpg - val.pred)^2)
+    
+    val_mses = c(val_mses, val.mse)
+  }
+  cv_mses= c(cv_mses, mean(val_mses))
+
+}
+cv_mses
+plot(cv_mses, pch=20, col='blue',type = 'b' )
+```
+
+# cv.glm 
+
+## glm function
+```{r}
+model = lm(mpg~horsepower, data = Auto)
+coef(model)
+
+library(boot)
+model2 = glm(mpg~horsepower, data = Auto)
+coef(model2)
+```
+## LOOCV by using cv.glm()
+```{r}
+glm.fit = glm(mpg~horsepower, data = Auto)
+
+cv.glm.rst = cv.glm(Auto, glm.fit)
+
+cv.mse = cv.glm.rst$delta[1]
+
+cv.mse
+```
+
+```{r}
+cv_mses = c()
+for(degree in 1:10){
+  glm.fit = glm(mpg~poly(horsepower, degree), data = Auto)
+  cv.glm.rst = cv.glm(Auto, glm.fit)
+  cv.mse = cv.glm.rst$delta[1]
+  
+  cv_mses = c(cv_mses, cv.mse)
+}  
+
+plot(cv_mses, pch=20, col='blue',type = 'b' )
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

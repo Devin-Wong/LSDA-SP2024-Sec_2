@@ -1,0 +1,58 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(ISLR2)
+set.seed(2024)
+N = nrow(Auto)
+train.indices = sample(N, N/2)
+
+dat.train = Auto[train.indices, ]
+dat.val = Auto[-train.indices, ]
+
+# linear
+model = lm(mpg ~ poly(horsepower, 1), data=dat.train)
+val.pred = predict(model, newdata = dat.val)
+val.mse_1 = mean((dat.val$mpg - val.pred)^2)
+val.mse_1
+
+# quadratic
+model.q = lm(mpg ~ poly(horsepower, 2), data=dat.train)
+val.pred.q = predict(model.q, newdata = dat.val)
+val.mse.q = mean((dat.val$mpg - val.pred.q)^2)
+val.mse.q
+
+# 3rd degress polynomial model
+model.3 = lm(mpg ~ poly(horsepower, 3), data=dat.train)
+val.pred.3 = predict(model.3, newdata = dat.val)
+val.mse.3 = mean((dat.val$mpg - val.pred.3)^2)
+val.mse.3
+
+```
+```{r}
+library(ISLR2)
+# set.seed(2024)
+N = nrow(Auto)
+train.indices = sample(N, N/2)
+
+dat.train = Auto[train.indices, ]
+dat.val = Auto[-train.indices, ]
+
+val.mses = c()
+
+for (degree in c(1:10)){
+  model = lm(mpg ~ poly(horsepower, degree), data=dat.train)
+  val.pred = predict(model, newdata = dat.val)
+  val.mse = mean((dat.val$mpg - val.pred)^2)
+  
+  val.mses = c(val.mses, val.mse)
+}
+# val.mses
+
+plot(val.mses, pch=20, col='blue',type = 'b' )
+```
+```{r}
+
+```
+
