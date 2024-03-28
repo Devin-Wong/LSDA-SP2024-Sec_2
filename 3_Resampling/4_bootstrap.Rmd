@@ -1,0 +1,93 @@
+
+# CI
+```{r}
+set.seed(1)
+x = runif(20, min = 0, max = 200)
+x
+hist(x)
+```
+## CI in theory 
+```{r}
+alpha = 0.05
+n = length(x)
+
+x_bar = mean(x)
+t = qt(1-alpha/2, n-1)
+s = sd(x)
+
+x_bar - t*s/sqrt(n)
+x_bar + t*s/sqrt(n)
+```
+## bootstap CI
+```{r}
+sample.means = c()
+for(i in 1:1000){
+  x.sample = sample(x, n, replace = T)
+  sample.mean = mean(x.sample)
+  
+  sample.means = c(sample.means, sample.mean)
+}
+quantile(sample.means, prob=c(0.025, 0.975))
+```
+
+# boostrap SE for sloop
+```{r}
+library(ISLR2)
+model = lm(mpg~horsepower, data = Auto)
+summary(model)
+```
+## manual method
+```{r}
+set.seed(1)
+N = nrow(Auto)
+
+intercepts = c()
+slopes = c()
+for(i in 1:1000) {
+  index = sample(N, N, replace = T)
+  model = glm(mpg~horsepower, data = Auto, subset = index)
+  
+  intercept = unname(coef(model)[1])
+  slope = unname(coef(model)[2])
+  
+  intercepts = c(intercepts, intercept)
+  slopes = c(slopes, slope)
+}
+sd(intercepts)
+sd(slopes)
+```
+## boot function
+```{r}
+boot.fn = function(data, index){
+  model = glm(mpg~horsepower, data = data, subset = index)
+
+  return(unname(coef(model)))
+}
+```
+
+```{r}
+index = sample(N,N, replace = T)
+boot.fn(Auto, index)
+```
+
+```{r}
+library(boot)
+
+boot(Auto, boot.fn, 1000)
+```
+
+```{r}
+boot.fn = function(data, index){
+  model = glm(mpg~horsepower+I(horsepower^2), data = data, subset = index)
+  return(unname(coef(model)))
+}
+
+boot(Auto, boot.fn, 1000)
+```
+
+
+
+
+
+
+
