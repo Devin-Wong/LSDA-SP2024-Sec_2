@@ -2008,11 +2008,57 @@ F-statistic: 27.07 on 11 and 251 DF,  p-value: &lt; 2.2e-16</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+</div>
+</div>
+<div id="forwardbackward-stepwise" class="section level1">
+<h1>Forward/Backward stepwise</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yKGkgaW4gMTo1KXtcbiAgTSA9ICByZWdmaXQuZndkLnNtcnkkd2hpY2hcbiAgciA9IE1baSxdXG4gIHZhcnMuc2VsZWN0ZWQgPSAgbmFtZXMocilbcl1bLTFdXG4gIHByaW50KHZhcnMuc2VsZWN0ZWQpXG59ICBcbmBgYCJ9 -->
+<pre class="r"><code>for(i in 1:5){
+  M =  regfit.fwd.smry$which
+  r = M[i,]
+  vars.selected =  names(r)[r][-1]
+  print(vars.selected)
+}  </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiQ1JCSVwiXG5bMV0gXCJIaXRzXCIgXCJDUkJJXCJcblsxXSBcIkhpdHNcIiAgICBcIkNSQklcIiAgICBcIlB1dE91dHNcIlxuWzFdIFwiSGl0c1wiICAgICAgXCJDUkJJXCIgICAgICBcIkRpdmlzaW9uV1wiIFwiUHV0T3V0c1wiICBcblsxXSBcIkF0QmF0XCIgICAgIFwiSGl0c1wiICAgICAgXCJDUkJJXCIgICAgICBcIkRpdmlzaW9uV1wiIFwiUHV0T3V0c1wiICBcbiJ9 -->
+<pre><code>[1] &quot;CRBI&quot;
+[1] &quot;Hits&quot; &quot;CRBI&quot;
+[1] &quot;Hits&quot;    &quot;CRBI&quot;    &quot;PutOuts&quot;
+[1] &quot;Hits&quot;      &quot;CRBI&quot;      &quot;DivisionW&quot; &quot;PutOuts&quot;  
+[1] &quot;AtBat&quot;     &quot;Hits&quot;      &quot;CRBI&quot;      &quot;DivisionW&quot; &quot;PutOuts&quot;  </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="select-a-single-best-model-1" class="section level2">
+<h2>select a single best model</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaSA9IHdoaWNoLm1heChyZWdmaXQuZndkLnNtcnkkYWRqcjIpXG5cbk0gPSAgcmVnZml0LmZ3ZC5zbXJ5JHdoaWNoXG5yID0gTVtpLF1cbnZhcnMuc2VsZWN0ZWQgPSAgbmFtZXMocilbcl1bLTFdXG52YXJzLnNlbGVjdGVkXG5gYGAifQ== -->
+<pre class="r"><code>i = which.max(regfit.fwd.smry$adjr2)
+
+M =  regfit.fwd.smry$which
+r = M[i,]
+vars.selected =  names(r)[r][-1]
+vars.selected</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkF0QmF0XCIgICAgIFwiSGl0c1wiICAgICAgXCJXYWxrc1wiICAgICBcIkNBdEJhdFwiICAgIFwiQ1J1bnNcIiAgICBcbiBbNl0gXCJDUkJJXCIgICAgICBcIkNXYWxrc1wiICAgIFwiTGVhZ3VlTlwiICAgXCJEaXZpc2lvbldcIiBcIlB1dE91dHNcIiAgXG5bMTFdIFwiQXNzaXN0c1wiICBcbiJ9 -->
+<pre><code> [1] &quot;AtBat&quot;     &quot;Hits&quot;      &quot;Walks&quot;     &quot;CAtBat&quot;    &quot;CRuns&quot;    
+ [6] &quot;CRBI&quot;      &quot;CWalks&quot;    &quot;LeagueN&quot;   &quot;DivisionW&quot; &quot;PutOuts&quot;  
+[11] &quot;Assists&quot;  </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KYGBge3J9DQpsaWJyYXJ5KElTTFIyKQ0KVmlldyhIaXR0ZXJzKQ0KDQpzdW0oaXMubmEoSGl0dGVycyRTYWxhcnkpKQ0KDQpkYXQgPSBuYS5vbWl0KEhpdHRlcnMpDQpgYGANCg0KIyBCZXN0IHN1YnNldCBzZWxlY3Rpb24NCg0KYGBge3J9DQpsaWJyYXJ5KGxlYXBzKQ0KDQpyZWdmaXQuZnVsbCA9IHJlZ3N1YnNldHMoU2FsYXJ5fi4sIGRhdGEgPSBkYXQsIG52bWF4PTE5KQ0KDQpzdW1tYXJ5KHJlZ2ZpdC5mdWxsKQ0KYGBgDQoNCmBgYHtyfQ0KcmVnZml0LmZ1bGwuc21yeSA9IHN1bW1hcnkocmVnZml0LmZ1bGwpDQoNCk0gPSAgcmVnZml0LmZ1bGwuc21yeSR3aGljaA0KDQppID0gMw0KciA9IE1baSxdDQpuYW1lcyhyKVtyXVstMV0NCg0KYGBgDQoNCiMjIHNlbGVjdCBhIHNpbmdsZSBiZXN0IG1vZGVsDQpgYGB7cn0NCmkgPSB3aGljaC5tYXgocmVnZml0LmZ1bGwuc21yeSRhZGpyMikNCg0KTSA9ICByZWdmaXQuZnVsbC5zbXJ5JHdoaWNoDQpyID0gTVtpLF0NCnZhcnMuc2VsZWN0ZWQgPSAgbmFtZXMocilbcl1bLTFdDQp2YXJzLnNlbGVjdGVkDQpgYGANCiMgY29tcGFyZSB0aGUgbW9kZWwgd2l0aCBmdWxsIG1vZGVsDQojIyBmdWxsIG1vZGVsDQpgYGB7cn0NCm1vZGVsLmZ1bGwgPSBsbShTYWxhcnl+LiwgZGF0YSA9IGRhdCkNCnN1bW1hcnkobW9kZWwuZnVsbCkNCmBgYA0KIyMgYmVzdCBzdWJzZXQgbW9kZWwNCmBgYHtyfQ0KZGF0Lm1vZGVsID0gZGF0YS5mcmFtZShtb2RlbC5tYXRyaXgoU2FsYXJ5fi4sIGRhdGEgPSBkYXQpKQ0KZGF0LnNlbGVjdCA9IGRhdC5tb2RlbFt2YXJzLnNlbGVjdGVkXQ0KDQpiZXN0Lm1vZGVsID0gbG0oZGF0JFNhbGFyeX4uLCBkYXRhID0gZGF0LnNlbGVjdCkNCnN1bW1hcnkoYmVzdC5tb2RlbCkNCg0KYGBgDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KYGBge3J9DQpsaWJyYXJ5KElTTFIyKQ0KVmlldyhIaXR0ZXJzKQ0KDQpzdW0oaXMubmEoSGl0dGVycyRTYWxhcnkpKQ0KDQpkYXQgPSBuYS5vbWl0KEhpdHRlcnMpDQpgYGANCg0KIyBCZXN0IHN1YnNldCBzZWxlY3Rpb24NCg0KYGBge3J9DQpsaWJyYXJ5KGxlYXBzKQ0KDQpyZWdmaXQuZnVsbCA9IHJlZ3N1YnNldHMoU2FsYXJ5fi4sIGRhdGEgPSBkYXQsIG52bWF4PTE5KQ0KDQpzdW1tYXJ5KHJlZ2ZpdC5mdWxsKQ0KYGBgDQoNCmBgYHtyfQ0KcmVnZml0LmZ1bGwuc21yeSA9IHN1bW1hcnkocmVnZml0LmZ1bGwpDQoNCk0gPSAgcmVnZml0LmZ1bGwuc21yeSR3aGljaA0KDQppID0gMw0KciA9IE1baSxdDQpuYW1lcyhyKVtyXVstMV0NCg0KYGBgDQoNCiMjIHNlbGVjdCBhIHNpbmdsZSBiZXN0IG1vZGVsDQpgYGB7cn0NCmkgPSB3aGljaC5tYXgocmVnZml0LmZ1bGwuc21yeSRhZGpyMikNCg0KTSA9ICByZWdmaXQuZnVsbC5zbXJ5JHdoaWNoDQpyID0gTVtpLF0NCnZhcnMuc2VsZWN0ZWQgPSAgbmFtZXMocilbcl1bLTFdDQp2YXJzLnNlbGVjdGVkDQpgYGANCiMgY29tcGFyZSB0aGUgbW9kZWwgd2l0aCBmdWxsIG1vZGVsDQojIyBmdWxsIG1vZGVsDQpgYGB7cn0NCm1vZGVsLmZ1bGwgPSBsbShTYWxhcnl+LiwgZGF0YSA9IGRhdCkNCnN1bW1hcnkobW9kZWwuZnVsbCkNCmBgYA0KIyMgYmVzdCBzdWJzZXQgbW9kZWwNCmBgYHtyfQ0KZGF0Lm1vZGVsID0gZGF0YS5mcmFtZShtb2RlbC5tYXRyaXgoU2FsYXJ5fi4sIGRhdGEgPSBkYXQpKQ0KZGF0LnNlbGVjdCA9IGRhdC5tb2RlbFt2YXJzLnNlbGVjdGVkXQ0KDQpiZXN0Lm1vZGVsID0gbG0oZGF0JFNhbGFyeX4uLCBkYXRhID0gZGF0LnNlbGVjdCkNCnN1bW1hcnkoYmVzdC5tb2RlbCkNCg0KYGBgDQoNCiMgRm9yd2FyZC9CYWNrd2FyZCBzdGVwd2lzZQ0KDQpgYGB7cn0NCnJlZ2ZpdC5md2QgPSByZWdzdWJzZXRzKFNhbGFyeX4uLCBkYXRhID0gZGF0LCBudm1heD0xOSwgbWV0aG9kID0gImZvcndhcmQiKQ0KDQpyZWdmaXQuZndkLnNtcnkgPSBzdW1tYXJ5KHJlZ2ZpdC5md2QpDQpgYGANCg0KYGBge3J9DQpmb3IoaSBpbiAxOjUpew0KICBNID0gIHJlZ2ZpdC5md2Quc21yeSR3aGljaA0KICByID0gTVtpLF0NCiAgdmFycy5zZWxlY3RlZCA9ICBuYW1lcyhyKVtyXVstMV0NCiAgcHJpbnQodmFycy5zZWxlY3RlZCkNCn0gIA0KYGBgDQoNCiMjIHNlbGVjdCBhIHNpbmdsZSBiZXN0IG1vZGVsDQpgYGB7cn0NCmkgPSB3aGljaC5tYXgocmVnZml0LmZ3ZC5zbXJ5JGFkanIyKQ0KDQpNID0gIHJlZ2ZpdC5md2Quc21yeSR3aGljaA0KciA9IE1baSxdDQp2YXJzLnNlbGVjdGVkID0gIG5hbWVzKHIpW3JdWy0xXQ0KdmFycy5zZWxlY3RlZA0KYGBgDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg==</div>
 
 
 

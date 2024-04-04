@@ -57,9 +57,32 @@ summary(best.model)
 
 ```
 
+# Forward/Backward stepwise
 
+```{r}
+regfit.fwd = regsubsets(Salary~., data = dat, nvmax=19, method = "forward")
 
+regfit.fwd.smry = summary(regfit.fwd)
+```
 
+```{r}
+for(i in 1:5){
+  M =  regfit.fwd.smry$which
+  r = M[i,]
+  vars.selected =  names(r)[r][-1]
+  print(vars.selected)
+}  
+```
+
+## select a single best model
+```{r}
+i = which.max(regfit.fwd.smry$adjr2)
+
+M =  regfit.fwd.smry$which
+r = M[i,]
+vars.selected =  names(r)[r][-1]
+vars.selected
+```
 
 
 
