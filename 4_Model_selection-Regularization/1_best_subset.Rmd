@@ -1,0 +1,72 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(ISLR2)
+View(Hitters)
+
+sum(is.na(Hitters$Salary))
+
+dat = na.omit(Hitters)
+```
+
+# Best subset selection
+
+```{r}
+library(leaps)
+
+regfit.full = regsubsets(Salary~., data = dat, nvmax=19)
+
+summary(regfit.full)
+```
+
+```{r}
+regfit.full.smry = summary(regfit.full)
+
+M =  regfit.full.smry$which
+
+i = 3
+r = M[i,]
+names(r)[r][-1]
+
+```
+
+## select a single best model
+```{r}
+i = which.max(regfit.full.smry$adjr2)
+
+M =  regfit.full.smry$which
+r = M[i,]
+vars.selected =  names(r)[r][-1]
+vars.selected
+```
+# compare the model with full model
+## full model
+```{r}
+model.full = lm(Salary~., data = dat)
+summary(model.full)
+```
+## best subset model
+```{r}
+dat.model = data.frame(model.matrix(Salary~., data = dat))
+dat.select = dat.model[vars.selected]
+
+best.model = lm(dat$Salary~., data = dat.select)
+summary(best.model)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
