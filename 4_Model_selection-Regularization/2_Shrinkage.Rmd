@@ -1,0 +1,105 @@
+```{r}
+library(ISLR2)
+
+Hitters = na.omit(Hitters)
+
+x = model.matrix(Salary~., Hitters)[, -1]
+y = Hitters$Salary
+```
+
+# Ridge
+```{r}
+library(glmnet)
+
+grid = 10^seq(10, -2, length=100)
+
+# alpha = 0 -> ridge
+# alpha = 1 -> lasso
+ridge.model = glmnet(x, y, alpha = 0, lambda = grid) 
+
+plot(ridge.model, xvar = "lambda", label = T)
+```
+## coef vs lambda
+```{r}
+i = 50
+ridge.model$lambda[i]
+
+coef = coef(ridge.model)[,i][-1]
+sum(coef^2)
+```
+```{r}
+i = 60
+ridge.model$lambda[i]
+
+coef = coef(ridge.model)[,i][-1]
+sum(coef^2)
+```
+## predict coefficient
+```{r}
+50 %in% ridge.model$lambda
+```
+
+```{r}
+new.lambda = 60
+
+predict(ridge.model, s = new.lambda, type = "coefficients")[1:20, ]
+```
+
+# Compare Ridge to least squares
+
+```{r}
+set.seed(1)
+train.indix = sample(1:nrow(x), nrow(x)/2)
+test.indix = (-train.indix)
+
+x.train = x[train.indix, ]
+x.test = x[test.indix, ]
+
+y.train = y[train.indix]
+y.test = y[test.indix]
+```
+
+```{r}
+ridge.model = glmnet(x.train, y.train, alpha = 0, lambda=grid, )
+```
+
+## Ridge test mse
+```{r}
+ridge.pred.test = predict(ridge.model, s=4, newx = x.test)
+mean((y.test - ridge.pred.test)^2)
+```
+
+## Least squares test mse
+```{r}
+ridge.pred.test = predict(ridge.model, s=0, newx = x.test)
+mean((y.test - ridge.pred.test)^2)
+```
+# determine best lambda using cross validation
+
+## cv.glmnet
+```{r}
+library(glmnet)
+
+cv.out = cv.glmnet(x.train, y.train, alpha=0, nfolds = 10)
+plot(cv.out)
+```
+```{r}
+bestlamb = cv.out$lambda.min
+```
+
+## test mse with the best lambda
+
+```{r}
+ridge = glmnet(x.train, y.train, alpha = 0, lambda=bestlamb)
+
+ridge.pred.test = predict(ridge, newx = x.test)
+mean((y.test - ridge.pred.test)^2)
+
+```
+
+
+
+
+
+
+
