@@ -1,0 +1,80 @@
+
+# training and test sets
+```{r}
+library(ISLR2)
+set.seed(1)
+N = nrow(Boston)
+train.indices = sample(1:N, N/2)
+test.indices = (-train.indices)
+
+dim(Boston)
+```
+
+
+
+# Bagging
+```{r}
+
+library(randomForest)
+
+set.seed(1)
+
+# View(Boston)
+
+bag.boston = randomForest(medv~., data=Boston, subset = train.indices,
+                          mtry = 12, ntree = 500, importance = TRUE)
+
+bag.boston
+```
+```{r}
+y.pred.bag = predict(bag.boston, newdata = Boston[test.indices,])
+
+mean((Boston$medv[test.indices] - y.pred.bag)^2)
+
+plot(y.pred.bag, Boston$medv[test.indices])
+abline(0,1)
+```
+
+# Random Forests
+
+```{r}
+library(randomForest)
+set.seed(1)
+
+rf.boston = randomForest(medv~., data=Boston, subset = train.indices,
+                          mtry = 4, ntree = 500, importance = TRUE)
+
+```
+
+```{r}
+y.pred.rf = predict(rf.boston, newdata = Boston[test.indices,])
+
+mean((Boston$medv[test.indices] - y.pred.rf)^2)
+
+plot(y.pred.rf, Boston$medv[test.indices])
+abline(0,1)
+```
+
+```{r}
+importance(rf.boston)
+```
+```{r}
+varImpPlot(rf.boston)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

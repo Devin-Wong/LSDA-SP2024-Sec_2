@@ -1,0 +1,50 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+train = read.csv("train.csv")
+test = read.csv("test.csv")
+
+train$logSalePrice = log(train$SalePrice)
+test$logSalePrice = log(test$SalePrice)
+
+train = train[,-1]
+test = test[,-1]
+```
+
+```{r}
+X.train = model.matrix(logSalePrice~., data = train)[ ,-1]
+y.train = train$logSalePrice
+```
+
+
+```{r}
+test.1 = test[,-3]
+X.test = model.matrix(logSalePrice~., data = test.1)[ ,-1]
+
+StreetPave = rep(1, nrow(X.test))
+X.test = cbind(X.test, StreetPave)
+
+X.test = X.test[,colnames(X.train)]
+
+y.test = test$logSalePrice
+```
+
+
+
+```{r}
+model0 = lm(y.train~., data = data.frame(X.train))
+```
+
+
+
+
+
+
+
+
+
+
+
+
